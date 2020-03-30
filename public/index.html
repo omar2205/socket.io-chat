@@ -7,17 +7,17 @@
   <title>Socket IO CHAT</title>
   <style>
       * { margin: 0; padding: 0; box-sizing: border-box; }
-      body { font: 13px Helvetica, Arial; }
+      body { font: 13px Helvetica, Arial; padding: 1rem }
       form { background: #000; padding: 3px; position: fixed; bottom: 0; width: 100%; }
       form input { border: 0; padding: 10px; width: 90%; margin-right: .5%; }
       form button { width: 9%; background: rgb(130, 224, 255); border: none; padding: 10px; }
       #messages { list-style-type: none; margin: 0; padding: 0; }
-      #messages li { padding: 5px 10px; }
-      #messages li:nth-child(odd) { background: #eee; }
+      #messages .message { padding: 5px 10px; }
+      #messages .message:nth-child(odd) { background: #eee; }
     </style>
 </head>
 <body>
-  <ul id="messages"></ul>
+  <div id="messages"></div>
   <form action="">
     <input type="text" placeholder="username" id="username" />
     <input type="text" placeholder="Message..." id="m" autocomplete="off" />
@@ -29,7 +29,7 @@
   <script>
   $(function () {
     var socket = io();
-    socket.emit('chat message', 'User connected! say Hi.')
+    socket.emit('chat message', {user: $('#username').val() || 'Anonymous', msg: 'Connected'})
     $('form').submit(function(e){
       e.preventDefault(); // prevents page reloading
       socket.emit('chat message', {user: $('#username').val(), msg: $('#m').val()});
@@ -38,7 +38,7 @@
       return false;
     });
     socket.on('chat message', function(msg){
-      $('#messages').append(`<h4>${msg.user || 'Anonymous'}</h4><p>${msg.msg}</p>`);
+      $('#messages').append(`<div class="message"><h4>${msg.user || 'Anonymous'}</h4><p>${msg.msg}</p></div>`);
     });
   });
   </script>

@@ -7,7 +7,7 @@ const log = console.log
 
 app.get('/', (req, res) => {
   // res.send('<h1>Hello, World!</h1>')
-  res.sendFile(__dirname + '/index.html')
+  res.sendFile(__dirname + '/public/index.html')
 })
 
 io.on('connection', (socket) => {
@@ -15,7 +15,7 @@ io.on('connection', (socket) => {
   socket.on('chat message', msg => {
     log(msg)
     io.emit('chat message', msg)
-  })  
+  })
 })
 
-http.listen(3000, _ => console.log('SERVER_ON'))
+http.listen(process.env.PORT || 3000, _ => console.log('SERVER_ON'))
